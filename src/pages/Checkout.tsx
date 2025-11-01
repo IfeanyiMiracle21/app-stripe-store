@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import Navbar from '@/components/Navbar';
 
 const Checkout = () => {
   const [loading, setLoading] = useState(false);
@@ -77,12 +78,13 @@ const Checkout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Checkout</h1>
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <div className="max-w-3xl mx-auto p-6">
+        <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">Checkout</h1>
 
         <div className="grid gap-6">
-          <Card>
+          <Card className="shadow-elegant border-2">
             <CardHeader>
               <CardTitle>Order Summary</CardTitle>
             </CardHeader>
@@ -94,21 +96,21 @@ const Checkout = () => {
                       {item.name} x {item.quantity}
                     </span>
                     <span className="font-semibold">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      ₦{(item.price * item.quantity).toLocaleString('en-NG')}
                     </span>
                   </div>
                 ))}
                 <div className="border-t pt-2 mt-2">
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
-                    <span>${getTotalPrice().toFixed(2)}</span>
+                    <span>₦{getTotalPrice().toLocaleString('en-NG')}</span>
                   </div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="shadow-elegant border-2">
             <CardHeader>
               <CardTitle>Shipping Address</CardTitle>
             </CardHeader>
@@ -159,11 +161,12 @@ const Checkout = () => {
                       id="country"
                       value={address.country}
                       onChange={(e) => setAddress({ ...address, country: e.target.value })}
+                      placeholder="Nigeria"
                       required
                     />
                   </div>
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full shadow-glow" disabled={loading}>
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Place Order
                 </Button>

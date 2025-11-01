@@ -6,6 +6,7 @@ import { useCartStore } from '@/store/cartStore';
 import { useToast } from '@/hooks/use-toast';
 import { ShoppingCart, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '@/components/Navbar';
 
 interface Product {
   id: string;
@@ -70,54 +71,68 @@ const Products = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold">Products</h1>
-          <Button onClick={() => navigate('/cart')}>
-            <ShoppingCart className="mr-2 h-4 w-4" />
-            View Cart
-          </Button>
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="flex justify-between items-center mb-12">
+          <div>
+            <h1 className="text-5xl font-bold mb-2 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+              Products
+            </h1>
+            <p className="text-muted-foreground">Discover our curated collection</p>
+          </div>
         </div>
 
         {products.length === 0 ? (
-          <Card>
+          <Card className="shadow-elegant">
             <CardContent className="p-12 text-center">
               <p className="text-muted-foreground text-lg">No products available yet.</p>
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {products.map((product) => (
-              <Card key={product.id} className="flex flex-col">
-                <CardHeader>
+              <Card key={product.id} className="flex flex-col overflow-hidden hover-lift shadow-elegant border-2">
+                <CardHeader className="p-0">
                   {product.image_url && (
-                    <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-muted">
+                    <div className="aspect-square overflow-hidden bg-muted relative group">
                       <img
                         src={product.image_url}
                         alt={product.name}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
+                      {product.stock <= 5 && product.stock > 0 && (
+                        <div className="absolute top-3 right-3 bg-destructive text-destructive-foreground px-3 py-1 rounded-full text-xs font-semibold">
+                          Only {product.stock} left
+                        </div>
+                      )}
                     </div>
                   )}
-                  <CardTitle className="line-clamp-2">{product.name}</CardTitle>
                 </CardHeader>
-                <CardContent className="flex-1">
-                  <p className="text-sm text-muted-foreground line-clamp-3">
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex items-start justify-between mb-2">
+                    <CardTitle className="line-clamp-2 text-lg">{product.name}</CardTitle>
+                  </div>
+                  {product.category && (
+                    <span className="inline-block px-3 py-1 bg-accent text-accent-foreground rounded-full text-xs font-medium mb-3 w-fit">
+                      {product.category}
+                    </span>
+                  )}
+                  <p className="text-sm text-muted-foreground line-clamp-3 mb-4 flex-1">
                     {product.description}
                   </p>
-                  <p className="text-2xl font-bold mt-4">${product.price.toFixed(2)}</p>
-                  {product.category && (
-                    <p className="text-xs text-muted-foreground mt-2">{product.category}</p>
-                  )}
-                </CardContent>
-                <CardFooter>
+                  <div className="flex items-center justify-between mt-auto">
+                    <p className="text-3xl font-bold text-primary">₦{product.price.toLocaleString('en-NG')}</p>
+                  </div>
+                </div>
+                <CardFooter className="p-6 pt-0">
                   <Button
                     onClick={() => handleAddToCart(product)}
-                    className="w-full"
+                    className="w-full shadow-glow"
+                    size="lg"
                     disabled={product.stock <= 0}
                   >
-                    <Plus className="mr-2 h-4 w-4" />
+                    <Plus className="mr-2 h-5 w-5" />
                     {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
                   </Button>
                 </CardFooter>

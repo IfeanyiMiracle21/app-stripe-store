@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Trash2 } from 'lucide-react';
+import Navbar from '@/components/Navbar';
 
 interface Product {
   id: string;
@@ -127,13 +128,14 @@ const Admin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Admin Dashboard</h1>
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <div className="max-w-7xl mx-auto p-6">
+        <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">Admin Dashboard</h1>
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-1">
-            <Card>
+            <Card className="shadow-elegant border-2">
               <CardHeader>
                 <CardTitle>Add New Product</CardTitle>
               </CardHeader>
@@ -158,13 +160,14 @@ const Admin = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="price">Price</Label>
+                    <Label htmlFor="price">Price (₦)</Label>
                     <Input
                       id="price"
                       type="number"
                       step="0.01"
                       value={formData.price}
                       onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                      placeholder="e.g., 479990"
                       required
                     />
                   </div>
@@ -206,7 +209,7 @@ const Admin = () => {
           <div className="lg:col-span-2 space-y-4">
             <h2 className="text-2xl font-bold">Products</h2>
             {products.map((product) => (
-              <Card key={product.id}>
+              <Card key={product.id} className="shadow-elegant hover-lift border-2">
                 <CardContent className="p-6">
                   <div className="flex gap-4">
                     {product.image_url && (
@@ -222,7 +225,7 @@ const Admin = () => {
                       <h3 className="font-semibold text-lg">{product.name}</h3>
                       <p className="text-sm text-muted-foreground mt-1">{product.description}</p>
                       <div className="flex gap-4 mt-2 text-sm">
-                        <span className="font-bold">${product.price.toFixed(2)}</span>
+                        <span className="font-bold">₦{product.price.toLocaleString('en-NG')}</span>
                         <span className="text-muted-foreground">Stock: {product.stock}</span>
                         {product.category && (
                           <span className="text-muted-foreground">{product.category}</span>

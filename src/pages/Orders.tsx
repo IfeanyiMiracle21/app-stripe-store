@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { Package } from 'lucide-react';
+import Navbar from '@/components/Navbar';
 
 interface Order {
   id: string;
@@ -76,12 +77,13 @@ const Orders = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-5xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">My Orders</h1>
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <div className="max-w-5xl mx-auto p-6">
+        <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">My Orders</h1>
 
         {orders.length === 0 ? (
-          <Card>
+          <Card className="shadow-elegant">
             <CardContent className="p-12 text-center">
               <Package className="h-24 w-24 mx-auto text-muted-foreground mb-4" />
               <p className="text-muted-foreground text-lg">No orders yet.</p>
@@ -90,7 +92,7 @@ const Orders = () => {
         ) : (
           <div className="space-y-4">
             {orders.map((order) => (
-              <Card key={order.id}>
+              <Card key={order.id} className="shadow-elegant hover-lift border-2">
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
@@ -108,7 +110,7 @@ const Orders = () => {
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Total</span>
-                      <span className="font-bold text-lg">${order.total.toFixed(2)}</span>
+                      <span className="font-bold text-lg">₦{order.total.toLocaleString('en-NG')}</span>
                     </div>
                     {order.shipping_address && (
                       <div className="text-sm text-muted-foreground">

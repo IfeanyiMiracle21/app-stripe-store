@@ -7,6 +7,7 @@ import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import Navbar from '@/components/Navbar';
 
 const Cart = () => {
   const { items, updateQuantity, removeItem, getTotalPrice, getTotalItems } = useCartStore();
@@ -28,28 +29,32 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-6">
-        <Card className="w-full max-w-md text-center">
-          <CardContent className="p-12">
-            <ShoppingBag className="h-24 w-24 mx-auto text-muted-foreground mb-4" />
-            <h2 className="text-2xl font-bold mb-2">Your cart is empty</h2>
-            <p className="text-muted-foreground mb-6">Add some products to get started!</p>
-            <Button onClick={() => navigate('/products')}>Browse Products</Button>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="flex items-center justify-center p-6 min-h-[calc(100vh-80px)]">
+          <Card className="w-full max-w-md text-center shadow-elegant hover-lift">
+            <CardContent className="p-12">
+              <ShoppingBag className="h-24 w-24 mx-auto text-muted-foreground mb-4" />
+              <h2 className="text-2xl font-bold mb-2">Your cart is empty</h2>
+              <p className="text-muted-foreground mb-6">Add some products to get started!</p>
+              <Button onClick={() => navigate('/products')} className="shadow-glow">Browse Products</Button>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-5xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Shopping Cart</h1>
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <div className="max-w-5xl mx-auto p-6">
+        <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">Shopping Cart</h1>
         
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-4">
             {items.map((item) => (
-              <Card key={item.id}>
+              <Card key={item.id} className="shadow-elegant hover-lift">
                 <CardContent className="p-6">
                   <div className="flex gap-4">
                     {item.image_url && (
@@ -65,7 +70,7 @@ const Cart = () => {
                       <div>
                         <h3 className="font-semibold text-lg">{item.name}</h3>
                         <p className="text-xl font-bold text-primary mt-1">
-                          ${item.price.toFixed(2)}
+                          ₦{item.price.toLocaleString('en-NG')}
                         </p>
                       </div>
                       <div className="flex items-center gap-4 mt-4">
@@ -110,26 +115,26 @@ const Cart = () => {
           </div>
 
           <div className="lg:col-span-1">
-            <Card className="sticky top-6">
+            <Card className="sticky top-6 shadow-elegant border-2">
               <CardHeader>
                 <CardTitle>Order Summary</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Items ({getTotalItems()})</span>
-                  <span className="font-semibold">${getTotalPrice().toFixed(2)}</span>
+                  <span className="font-semibold">₦{getTotalPrice().toLocaleString('en-NG')}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span>${getTotalPrice().toFixed(2)}</span>
+                  <span>₦{getTotalPrice().toLocaleString('en-NG')}</span>
                 </div>
               </CardContent>
               <CardFooter className="flex flex-col gap-2">
-                <Button onClick={handleCheckout} className="w-full">
+                <Button onClick={handleCheckout} className="w-full shadow-glow">
                   Proceed to Checkout
                 </Button>
-                <Button onClick={() => navigate('/products')} variant="outline" className="w-full">
+                <Button onClick={() => navigate('/products')} variant="outline" className="w-full hover-lift">
                   Continue Shopping
                 </Button>
               </CardFooter>
